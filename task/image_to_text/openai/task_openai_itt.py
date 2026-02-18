@@ -1,5 +1,9 @@
 import base64
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.getenv('DIAL_API_KEY')
 
 from task._utils.constants import API_KEY, DIAL_CHAT_COMPLETIONS_ENDPOINT
 from task._utils.model_client import DialModelClient
@@ -18,7 +22,7 @@ def start() -> None:
     dalle_client = DialModelClient(
         api_key=API_KEY,
         endpoint=DIAL_CHAT_COMPLETIONS_ENDPOINT,
-        model="dalle-3"
+        deployment_name="dalle-3"
     )
     
     dalle_client.get_completion(
