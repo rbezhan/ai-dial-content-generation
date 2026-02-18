@@ -22,7 +22,7 @@ def start() -> None:
     dalle_client = DialModelClient(
         api_key=API_KEY,
         endpoint=DIAL_CHAT_COMPLETIONS_ENDPOINT,
-        deployment_name="dalle-3"
+        deployment_name="gpt-image-1.5-2025-12-16",
     )
     
     dalle_client.get_completion(
@@ -32,7 +32,7 @@ def start() -> None:
                 content=[
                     TxtContent(text="Describe the image."),
                     ImgContent(
-                        img_url=ImgUrl(
+                        image_url=ImgUrl(
                             url=f"data:image/png;base64,{base64_image}"
                         )
                     )
