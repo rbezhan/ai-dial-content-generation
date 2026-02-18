@@ -1,11 +1,13 @@
 import json
 from typing import Any
-
+from dotenv import load_dotenv
 import requests
+import os
 
 from task._models.message import Message
 from task._utils.request import print_request
-
+load_dotenv()
+API_KEY = os.getenv('DIAL_API_KEY')
 
 class DialModelClient:
     _endpoint: str

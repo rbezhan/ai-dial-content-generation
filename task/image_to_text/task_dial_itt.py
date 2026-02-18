@@ -1,4 +1,9 @@
 import asyncio
+import os
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.getenv('DIAL_API_KEY')
+
 from io import BytesIO
 from pathlib import Path
 
@@ -15,7 +20,7 @@ async def _put_image() -> Attachment:
     image_path = Path(__file__).parent.parent.parent / file_name
     mime_type_png = 'image/png'
     
-    async with DialBucketClient(api_key=API_KEY, endpoint=DIAL_URL) as bucket_client:
+    async with DialBucketClient(api_key=API_KEY, base_url=DIAL_URL) as bucket_client:
         with open(image_path, 'rb') as image_file:
             image_bytes = image_file.read()
         

@@ -1,5 +1,10 @@
 import asyncio
+import os
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.getenv('DIAL_API_KEY')
+
 
 from task._models.custom_content import Attachment
 from task._utils.constants import API_KEY, DIAL_URL, DIAL_CHAT_COMPLETIONS_ENDPOINT
@@ -52,7 +57,7 @@ def start() -> None:
     dalle_client = DialModelClient(
         api_key=API_KEY,
         endpoint=DIAL_CHAT_COMPLETIONS_ENDPOINT,
-        model='dall-e-3',
+        deployment_name='dall-e-3',
     )
 
     user_input = "Generate an image of a futuristic city skyline at sunset in a vivid style and hd quality."
@@ -70,7 +75,7 @@ def start() -> None:
     )
 
     if custom_content := ai_message.custom_content:
-        if attachments := custom_content.attachment:    
+        if attachments := custom_content.attachments:    
             asyncio.run(_save_images(attachments))
 
 start()
