@@ -22,7 +22,7 @@ def start() -> None:
     dalle_client = DialModelClient(
         api_key=API_KEY,
         endpoint=DIAL_CHAT_COMPLETIONS_ENDPOINT,
-        deployment_name="gpt-image-1.5-2025-12-16",
+        deployment_name="gpt-4o",
     )
     
     dalle_client.get_completion(
