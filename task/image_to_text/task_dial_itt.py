@@ -19,14 +19,21 @@ async def _put_image() -> Attachment:
     file_name = 'dialx-banner.png'
     image_path = Path(__file__).parent.parent.parent / file_name
     mime_type_png = 'image/png'
-    
-    async with DialBucketClient(api_key=API_KEY, base_url=DIAL_URL) as bucket_client:
-        with open(image_path, 'rb') as image_file:
-            image_bytes = image_file.read()
-        
+
+    async with DialBucketClient(
+            api_key=API_KEY,
+            base_url=DIAL_URL
+    ) as bucket_client:
+        with open(image_path, "rb") as f:
+            image_bytes = f.read()
+
         image_content = BytesIO(image_bytes)
 
-        attachment = await bucket_client.put_file(content=image_content, name=file_name, type=mime_type_png)
+        attachment = await bucket_client.put_file(
+            name=file_name,
+            mime_type=mime_type_png,
+            content=image_content
+        )
 
         return Attachment(
             title=file_name,
@@ -36,22 +43,22 @@ async def _put_image() -> Attachment:
 
 
 def start() -> None:
-    model_client = DialModelClient(
-        api_key=API_KEY,
+    dalle_client = DialModelClient(
         endpoint=DIAL_CHAT_COMPLETIONS_ENDPOINT,
-        deployment_name="anthropic.claude-v3-haiku"
+        deployment_name='anthropic.claude-v3-haiku',
+        api_key=API_KEY,
     )
 
     attachment = asyncio.run(_put_image())
     print(attachment)
 
-    model_client.get_completion(
+    dalle_client.get_completion(
         [
             Message(
                 role=Role.USER,
-                content="What is on this image?",
+                content="What do you see on this picture?",
                 custom_content=CustomContent(
-                    attachment=[attachment]     
+                    attachments=[attachment]
                 )
             )
         ]
